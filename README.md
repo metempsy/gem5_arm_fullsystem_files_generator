@@ -19,11 +19,11 @@ Generator of kernels, bootloaders, DTBs and disk images for aarch32 and aarch64 
     * `tar xJvf aarch-system-2017-04.tar.xz -C new_m5_path`
 3. Make the M5_PATH environment variable point to the new directory before running any gem5 arm FullSystem simulation
     * `export M5_PATH=$PWD/new_m5_path`
-4. Under new_m5_path/revisions, one will find the SHA-1 hash of the revision used for each repository involved in the files generation
+4. Under new_m5_path/revisions, one will find the SHA-1 hash of the revision used for each repository involved in the files generation. These are the values for the "April 2017" release:
     * `gem5: f6fb875`
     * `linux-arm64-gem5: 24fd623`
-    * `linux-arm-gem5_4.3: d5545a8`
-    * `linux-arm-gem5_linaro: b2af788`
+    * `linux-arm-gem5 (gem5/v4.3 branch): d5545a8`
+    * `linux-arm-gem5 (gem5/linaro branch): b2af788`
 
 ## How to use the files
 There are files generated for the VExpress_GEM5_V1 (both aarch32 and aarch64), VExpress_EMM (aarch32) and VExpress_EMM64 (aarch64) platforms.
