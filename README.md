@@ -14,7 +14,7 @@ Generator of kernels, bootloaders, DTBs and disk images for aarch32 and aarch64 
 2. Optionally let users run docker as non-root ([info](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user)).
 
 ## How to generate the files
-1. Just run the run.sh script on the cloned repository (use sudo if you did not let users run docker as non-root as indicated above). On a successful run (that may take more than an hour), the user will get the aarch-system-2017-04.tar.xz file in the same directory.
+1. Just run the run.sh script on the cloned repository (use sudo if you did not let users run docker as non-root as indicated above). On a successful run (that may take more than an hour), the user will get the aarch-system-20170421.tar.xz file in the same directory.
     * `./run.sh`
 2. Create a new_m5_path directory and untar the contents of the aarch-system-20170421.tar.xz file into it.
     * `mkdir new_m5_path`
