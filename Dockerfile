@@ -18,6 +18,8 @@
 
 FROM ubuntu:16.04
 
+RUN date +%Y%m%d > /release_date.txt
+
 RUN apt-get -y update
 RUN apt-get install -y gcc make python git swig scons g++ python-dev zlib1g-dev m4 device-tree-compiler gcc-aarch64-linux-gnu wget xz-utils bc gcc-arm-linux-gnueabi gcc-4.8-aarch64-linux-gnu gcc-4.8-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
 
@@ -34,7 +36,7 @@ RUN git rev-parse --short HEAD > /generated_files/revisions/gem5
 #generate DTBs for VExpress_GEM5_V1
 WORKDIR /gem5/system/arm/dt
 RUN make
-RUN cp *dtb /generated_files/binaries
+RUN for i in *dtb; do filename=$(basename $i .dtb); cp $i /generated_files/binaries/$filename.$(cat /release_date.txt).dtb; done
 
 #generate up-to-date bootloaders
 WORKDIR /gem5/system/arm/aarch64_bootloader
@@ -51,11 +53,11 @@ WORKDIR linux-arm-gem5_4.3
 RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm-gem5_4.3
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- gem5_defconfig
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j4
-RUN cp vmlinux /generated_files/binaries/vmlinux.aarch64.vexpress_gem5_v1.201704
+RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_gem5_v1_64.$(cat /release_date.txt)
 RUN make distclean
 RUN make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- gem5_defconfig
 RUN make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4
-RUN cp vmlinux /generated_files/binaries/vmlinux.aarch32.vexpress_gem5_v1.201704
+RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_gem5_v1.$(cat /release_date.txt)
 
 #checkout and build kernel and DTBs for VExpress_EMM64
 WORKDIR /
@@ -64,8 +66,8 @@ WORKDIR linux-arm64-gem5
 RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm64-gem5
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC=aarch64-linux-gnu-gcc-4.8 gem5_defconfig
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC=aarch64-linux-gnu-gcc-4.8 -j4
-RUN cp vmlinux /generated_files/binaries/vmlinux.aarch64.vexpress_emm64.201704
-RUN cp arch/arm64/boot/dts/aarch64_gem5_server.dtb /generated_files/binaries
+RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_emm64.$(cat /release_date.txt)
+RUN cp arch/arm64/boot/dts/aarch64_gem5_server.dtb /generated_files/binaries/aarch64_gem5_server.$(cat /release_date.txt).dtb
 
 #checkout and build kernel and DTBs for VExpress_EMM
 WORKDIR /
@@ -74,8 +76,11 @@ WORKDIR linux-arm-gem5_linaro
 RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm-gem5_linaro
 RUN make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CC=arm-linux-gnueabihf-gcc-4.8 vexpress_gem5_server_defconfig
 RUN make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CC=arm-linux-gnueabihf-gcc-4.8 -j4
-RUN cp vmlinux /generated_files/binaries/vmlinux.aarch32.vexpress_emm.201704
-RUN cp arch/arm/boot/dts/*gem5*dtb /generated_files/binaries
+RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_emm.$(cat /release_date.txt)
+WORKDIR arch/arm/boot/dts
+#indicate that vexpress-v2p-ca15-tc1-gem5.dtb is actually for 1 cpu
+RUN cp vexpress-v2p-ca15-tc1-gem5.dtb vexpress-v2p-ca15-tc1-gem5_1cpus.dtb
+RUN for i in *gem5_*dtb; do filename=$(basename $i .dtb); cp $i /generated_files/binaries/$filename.$(cat /release_date.txt).dtb; done
 
 #Compile up-to-date m5 binary for the disk images
 WORKDIR /gem5/util/m5
@@ -110,7 +115,7 @@ RUN mkdir /mount
 WORKDIR /generated_files
 
 #This is thought to run with "docker run --privileged=true -v $PWD:/shared_vol <image_name>" in order to get the file
-#For some reason we need to copy the .img from the built docker image to the running cointainer in order to be able to mount them
+#For some reason we need to copy the .img files from the built docker image to the running cointainer in order to be able to mount them
 CMD \
 for image in aarch64-ubuntu-trusty-headless linaro-minimal-aarch64;   \
 do                                                                    \
@@ -128,6 +133,6 @@ do                                                                    \
      /gem5/util/gem5img.py umount /mount                              \
     ) || exit 1;                                                      \
 done                                                               && \
-tar cJvf ../aarch-system-2017-04.tar.xz binaries disks revisions   && \
-cp /aarch-system-2017-04.tar.xz /shared_vol
+tar cJvf ../aarch-system-$(cat /release_date.txt).tar.xz binaries disks revisions   && \
+cp /aarch-system-$(cat /release_date.txt).tar.xz /shared_vol
 
