@@ -48,9 +48,9 @@ RUN cp boot.arm boot_emm.arm /generated_files/binaries
 
 #checkout and build kernel for VExpress_GEM5_V1
 WORKDIR /
-RUN git clone https://github.com/gem5/linux-arm-gem5.git -b gem5/v4.3 linux-arm-gem5_4.3
-WORKDIR linux-arm-gem5_4.3
-RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm-gem5_4.3
+RUN git clone https://github.com/gem5/linux-arm-gem5.git -b gem5/v4.4 linux-arm-gem5_4.4
+WORKDIR linux-arm-gem5_4.4
+RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm-gem5_4.4
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- gem5_defconfig
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j4
 RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_gem5_v1_64.$(cat /release_date.txt)
