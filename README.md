@@ -1,5 +1,5 @@
 # gem5_arm_fullsystem_files_generator
-Generator of kernels, bootloaders, DTBs and disk images for aarch32 and aarch64 gem5 Full System simulations (updated April 26 2017)
+Generator of kernels, bootloaders, DTBs and disk images for aarch32 and aarch64 gem5 Full System simulations (updated June 16 2017)
 
 ## List of known changes from [aarch-system-2014-10.tar.xz](http://www.gem5.org/dist/current/arm/aarch-system-2014-10.tar.xz)
 1. The aarch64 bootloader is newer ([info](https://gem5.googlesource.com/public/gem5/+/47326f54222af99d96ab57508449d1bb62d03842)).
@@ -14,15 +14,15 @@ Generator of kernels, bootloaders, DTBs and disk images for aarch32 and aarch64 
 2. Optionally let users run docker as non-root ([info](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user)).
 
 ## How to generate the files
-1. Just run the run.sh script on the cloned repository (use sudo if you did not let users run docker as non-root as indicated above). On a successful run (that may take more than an hour), the user will get the aarch-system-20170426.tar.xz file in the same directory.
+1. Just run the run.sh script on the cloned repository (use sudo if you did not let users run docker as non-root as indicated above). On a successful run (that may take more than an hour), the user will get the aarch-system-20170616.tar.xz file in the same directory.
     * `./run.sh`
-2. Create a new_m5_path directory and untar the contents of the aarch-system-20170426.tar.xz file into it.
+2. Create a new_m5_path directory and untar the contents of the aarch-system-20170616.tar.xz file into it.
     * `mkdir new_m5_path`
-    * `tar xJvf aarch-system-20170426.tar.xz -C new_m5_path`
+    * `tar xJvf aarch-system-20170616.tar.xz -C new_m5_path`
 3. Make the M5_PATH environment variable point to the new directory before running any gem5 arm FullSystem simulation
     * `export M5_PATH=$PWD/new_m5_path`
-4. Under new_m5_path/revisions, one will find the SHA-1 hash of the revision used for each repository involved in the files generation. These are the values for the "April 26 2017" release:
-    * `gem5: 2ee0992`
+4. Under new_m5_path/revisions, one will find the SHA-1 hash of the revision used for each repository involved in the files generation. These are the values for the "June 16 2017" release:
+    * `gem5: fe7304c`
     * `linux-arm64-gem5: 24fd623`
     * `linux-arm-gem5 (gem5/v4.4 branch): 2e54922`
     * `linux-arm-gem5 (gem5/linaro branch): b2af788`
@@ -37,8 +37,8 @@ These are some example command lines depending on the simulated platform:
 ./build/ARM/gem5.opt \
 configs/example/fs.py \
 --machine-type=VExpress_GEM5_V1 \
---dtb=armv8_gem5_v1_1cpu.20170426.dtb \
---kernel=vmlinux.vexpress_gem5_v1_64.20170426 \
+--dtb=armv8_gem5_v1_1cpu.20170616.dtb \
+--kernel=vmlinux.vexpress_gem5_v1_64.20170616 \
 --script=$PWD/tests/halt.sh
 ```
 
@@ -47,8 +47,8 @@ configs/example/fs.py \
 ./build/ARM/gem5.opt \
 configs/example/fs.py \
 --machine-type=VExpress_GEM5_V1 \
---dtb=armv7_gem5_v1_1cpu.20170426.dtb \
---kernel=vmlinux.vexpress_gem5_v1.20170426 \
+--dtb=armv7_gem5_v1_1cpu.20170616.dtb \
+--kernel=vmlinux.vexpress_gem5_v1.20170616 \
 --script=$PWD/tests/halt.sh
 ```
 
@@ -58,8 +58,8 @@ For this command to work, one may need to remove the VExpress_EMM64 platform fro
 ./build/ARM/gem5.opt \
 configs/example/fs.py \
 --machine-type=VExpress_EMM64 \
---dtb=aarch64_gem5_server.20170426.dtb \
---kernel=vmlinux.vexpress_emm64.20170426 \
+--dtb=aarch64_gem5_server.20170616.dtb \
+--kernel=vmlinux.vexpress_emm64.20170616 \
 --script=$PWD/tests/halt.sh
 ```
 
@@ -69,7 +69,7 @@ For this command to work, one may need to remove the VExpress_EMM platform from 
 ./build/ARM/gem5.opt \
 configs/example/fs.py \
 --machine-type=VExpress_EMM \
---dtb=vexpress-v2p-ca15-tc1-gem5.20170426.dtb \
---kernel=vmlinux.vexpress_emm.20170426 \
+--dtb=vexpress-v2p-ca15-tc1-gem5.20170616.dtb \
+--kernel=vmlinux.vexpress_emm.20170616 \
 --script=$PWD/tests/halt.sh
 ```
