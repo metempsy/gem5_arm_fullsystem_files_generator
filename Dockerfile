@@ -129,7 +129,7 @@ for image in aarch32-ubuntu-natty-headless linux-aarch32-ael;         \
 do                                                                    \
     (cp /old_m5_path/disks/$image.img disks                        && \
      /gem5/util/gem5img.py mount disks/$image.img /mount           && \
-     cp /gem5/util/m5/m5.aarch32 /mount/sbin                       && \
+     cp /gem5/util/m5/m5.aarch32 /mount/sbin/m5                    && \
      /gem5/util/gem5img.py umount /mount                              \
     ) || exit 1;                                                      \
 done                                                               && \
