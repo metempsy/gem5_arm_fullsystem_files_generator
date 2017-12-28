@@ -21,7 +21,7 @@ FROM ubuntu:16.04
 RUN date +%Y%m%d > /release_date.txt
 
 RUN apt-get -y update
-RUN apt-get install -y gcc make python git swig scons g++ python-dev zlib1g-dev m4 device-tree-compiler gcc-aarch64-linux-gnu wget xz-utils bc gcc-arm-linux-gnueabi gcc-4.8-aarch64-linux-gnu gcc-4.8-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
+RUN apt-get install -y gcc make python git scons g++ python-dev zlib1g-dev m4 device-tree-compiler gcc-aarch64-linux-gnu wget xz-utils bc gcc-arm-linux-gnueabi gcc-4.8-aarch64-linux-gnu gcc-4.8-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
 
 RUN mkdir /generated_files
 RUN mkdir /generated_files/binaries
@@ -48,9 +48,9 @@ RUN cp boot.arm boot_emm.arm /generated_files/binaries
 
 #checkout and build kernel for VExpress_GEM5_V1
 WORKDIR /
-RUN git clone https://github.com/gem5/linux-arm-gem5.git -b gem5/v4.4 linux-arm-gem5_4.4
-WORKDIR linux-arm-gem5_4.4
-RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm-gem5_4.4
+RUN git clone https://gem5.googlesource.com/arm/linux
+WORKDIR linux
+RUN git rev-parse --short HEAD > /generated_files/revisions/linux
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- gem5_defconfig
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j4
 RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_gem5_v1_64.$(cat /release_date.txt)
@@ -61,9 +61,9 @@ RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_gem5_v1.$(cat /release
 
 #checkout and build kernel and DTBs for VExpress_EMM64
 WORKDIR /
-RUN git clone https://github.com/gem5/linux-arm64-gem5.git
-WORKDIR linux-arm64-gem5
-RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm64-gem5
+RUN git clone https://gem5.googlesource.com/arm/linux-arm64-legacy
+WORKDIR linux-arm64-legacy
+RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm64-legacy
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC=aarch64-linux-gnu-gcc-4.8 gem5_defconfig
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC=aarch64-linux-gnu-gcc-4.8 -j4
 RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_emm64.$(cat /release_date.txt)
@@ -71,9 +71,9 @@ RUN cp arch/arm64/boot/dts/aarch64_gem5_server.dtb /generated_files/binaries/aar
 
 #checkout and build kernel and DTBs for VExpress_EMM
 WORKDIR /
-RUN git clone https://github.com/gem5/linux-arm-gem5.git -b gem5/linaro linux-arm-gem5_linaro
-WORKDIR linux-arm-gem5_linaro
-RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm-gem5_linaro
+RUN git clone https://gem5.googlesource.com/arm/linux-arm-legacy
+WORKDIR linux-arm-legacy
+RUN git rev-parse --short HEAD > /generated_files/revisions/linux-arm-legacy
 RUN make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CC=arm-linux-gnueabihf-gcc-4.8 vexpress_gem5_server_defconfig
 RUN make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CC=arm-linux-gnueabihf-gcc-4.8 -j4
 RUN cp vmlinux /generated_files/binaries/vmlinux.vexpress_emm.$(cat /release_date.txt)
