@@ -16,7 +16,7 @@
 #
 # Author: Pau Cabre
 
-docker build -t gem5_arm_fullsystem_files_generator .
+docker build --build-arg release_date=`date +%Y%m%d` -t gem5_arm_fullsystem_files_generator .
 
 docker run -v $PWD:/shared_vol --privileged=true gem5_arm_fullsystem_files_generator
 
