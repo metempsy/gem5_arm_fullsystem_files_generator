@@ -14,9 +14,9 @@ Generator of kernels, bootloaders, DTBs and disk images for aarch32 and aarch64 
 2. Optionally let users run docker as non-root ([info](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user)).
 
 ## How to generate the files
-1. Just run the run.sh script on the cloned repository (use sudo if you did not let users run docker as non-root as indicated above). On a successful run (that may take more than an hour), the user will get the aarch-system-<date>.tar.xz file in the same directory.
+1. Just run the run.sh script on the cloned repository (use sudo if you did not let users run docker as non-root as indicated above). On a successful run (that may take more than an hour), the user will get the aarch-system-\<date>.tar.xz file in the same directory.
     * `./run.sh`
-2. Create a new_m5_path directory and untar the contents of the generated aarch-system-<date>.tar.xz file into it.
+2. Create a new_m5_path directory and untar the contents of the generated aarch-system-\<date>.tar.xz file into it.
     * `mkdir new_m5_path`
     * `tar xJvf aarch-system-<date>.tar.xz -C new_m5_path`
 3. Make the M5_PATH environment variable point to the new directory before running any gem5 arm FullSystem simulation.
